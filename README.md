@@ -4,7 +4,18 @@ Kaufmann Joel, Schürch Loïc
 
 ## Step 1: Static HTTP server with apache httpd
 
+The first step is under the branch *fb-apache-static*
 
+Run the apache-php server:
+* Go to the location of the Dockerfile: docker-images/apache-php-image
+* Build the image: `docker build -t res/apache_php .`.
+* Run the container: map the port you want to use:
+  * `docker run -p YOUR_PORT:80 res/apache_php`
+  * or as a deamon: `docker run -d -p YOUR_PORT:80 res/apache_php`
+
+You can run multiple instance of the server, you simply need to map different ports for each instance.
+
+Open your favorite browser and go to `192.168.99.100:YOU_PORT` 
 
 ## Step 2: Dynamic HTTP server with express.js
 
