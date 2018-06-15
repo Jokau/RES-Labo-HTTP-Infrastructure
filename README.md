@@ -31,6 +31,27 @@ The second step is under the branch *fb-express-dynamic*
 Open your favorite browser and go to `192.168.99.100:PORT` to see generated states from Italy and the USA.
 
 ## Step 3: Reverse proxy with apache (static configuration)
+The third step is under the branch *fb-apache-reverse-proxy*
+
+Build the reverse proxy image `res/apache_rp` to handle two services at the same address:
+* run the static apache container and the dynamic express service
+  * `docker run -d --name apache_static res/apache_php`
+  * `docker run -d --name express_dynamic res/express_states`
+* get the ip address of each with
+  * `docker inspect apache_static | grep -i ipaddress`	=> 172.17.0.2
+  * `docker inspect express_dynamic | grep -i ipaddress`	=> 172.17.0.3
+* edit configuration file 001-reverse-proxy.conf with previous ip addresses
+* build and run the reverse proxy container
+  * `docker build -t res/apache_rp .`
+  * `docker run -p 8080:80 res/apache_rp`
+* reverse proxy required domain name to be set :
+  * edit OS hosts file : [docker ip] [domain name]
+    * 192.168.99.10	lab.res.ch
+
+Services are now routed with the following url :
+* http://demo.res.ch:8080/
+* http://demo.res.ch:8080/api/states/
+
 
 ## Step 4: AJAX requests with JQuery
 
